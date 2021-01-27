@@ -1,6 +1,5 @@
 import React from 'react'
 import {Card} from "react-bootstrap"
-import products from "../products"
 import Ratings from './Ratings'
 function Products({product}) {
     return (

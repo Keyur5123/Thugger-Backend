@@ -1,10 +1,17 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import {Row,Col,ListGroup,Image,Button} from "react-bootstrap"
 import products from "../products"
 import Ratings from "../Components/Ratings"
-
+import axios from "axios"
 function ProductScreen({match}) {
-    const product=products.find((p)=> p._id==match.params.id)
+    const [product,setProduct]=useState([]);
+    useEffect(() => {
+         const fetchproducts=async()=>{
+            const response=await axios.get("http://localhost:5000/products");
+            setProduct(response.data.find((p)=>p._id===match.params.id));
+        }
+        fetchproducts();
+    }, [match])
     return (
         <div>
             <Row>
