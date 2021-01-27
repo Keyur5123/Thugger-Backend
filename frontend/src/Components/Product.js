@@ -19,7 +19,7 @@ function Products({product}) {
                     </a>
                     </Card.Title>
                     <Card.Text>
-                        <Ratings reviews={product.reviews}/>
+                        <Ratings rating={product.rating} reviews={`${product.numReviews} reviews`}/>
                     </Card.Text>
                 </Card.Body>
                 
