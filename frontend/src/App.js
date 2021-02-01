@@ -1,5 +1,4 @@
 import Header from './Components/Header';
-import logo from './logo.svg';
 import {Container} from "react-bootstrap"
 import Footer from './Components/Footer';
 import "./bootstrap.min.css"

@@ -8,7 +8,6 @@ const routes=express();
 
 routes.get("/",asyncHandler(async(req,res)=>{
     const products=await Products.find({});
-
     res.json(products)
 }))
 routes.get("/:id",asyncHandler(async(req,res)=>{
