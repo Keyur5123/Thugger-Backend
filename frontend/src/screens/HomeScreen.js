@@ -13,7 +13,6 @@ function HomeScreen() {
     const {loading,error,products }=productList
     useEffect(() => {
         dispatch(listProducts())
-
         //  const fetchproducts=async()=>{
         //     const response=await axios.get("http://localhost:5000/products");
         //     setProducts(response.data);

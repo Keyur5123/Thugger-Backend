@@ -15,7 +15,7 @@ function ProductScreen({history,match}) {
         dispatch(listProductsDetail(match.params.id)) 
     }, [match,dispatch])
     function addToCartHandler(){
-        history.push(`/cart/${match.params.id}?${qty}`)
+        history.push(`/cart/${match.params.id}?qty=${qty}`)
     }
     return (
         <div>
