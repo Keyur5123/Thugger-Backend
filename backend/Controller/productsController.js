@@ -6,7 +6,7 @@ export const getProducts=asyncHandler(async(req,res)=>{
     res.json(products)
 })
 
-export const getProductsById=asyncHandler(async(req,res)=>{
+export const getProductById=asyncHandler(async(req,res)=>{
     const product=await Products.findById(req.params.id);
     if(product){
         res.json(product)

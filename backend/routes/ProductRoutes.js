@@ -1,12 +1,10 @@
 import express from "express"
-import {getProducts,getProductsById} from "../Controller/productsController.js"
-import Products from "../Models/ProductSchema.js"
-import asyncHandler from "express-async-handler"
+import {getProducts,getProductById} from "../Controller/productsController.js"
 const routes=express();
 
 
 
 routes.route("/").get(getProducts)
-routes.route("/:id").get(getProductsById)
+routes.route("/:id").get(getProductById)
 
 export default routes;

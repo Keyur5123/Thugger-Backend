@@ -5,11 +5,12 @@ import cors from "cors"
 import colors from "colors"
 import connectDB from "./config/db.js"
 import ProductRoutes from "./routes/ProductRoutes.js"
+import UserRoutes from "./routes/UserRoutes.js"
 import { errorHandler, notFound} from "./MiddleWare/errorMiddleWare.js"
 dotenv.config();
 const app=express();
 app.use(cors())
-
+app.use(express.json())
 connectDB();
 
 // app.use((req,res,next)=>{
@@ -23,6 +24,8 @@ app.get("/",(req,res)=>{
 })
 
 app.use("/products",ProductRoutes)
+
+app.use("/user",UserRoutes)
 
 app.use(notFound)
 
