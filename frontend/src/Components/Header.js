@@ -1,7 +1,15 @@
 import React from 'react'
-import {Nav,Navbar,Container} from "react-bootstrap"
+import {Nav,Navbar,Container, NavDropdown} from "react-bootstrap"
+import { useDispatch, useSelector } from 'react-redux'
 import LinkContainer from "react-router-bootstrap/lib/LinkContainer"
+import { logout } from '../actions/userAction'
 const Header = () => {
+    const dispatch = useDispatch()
+    const userLogin = useSelector(state => state.userLogin)
+    const {userInfo}=userLogin
+    const logoutHandler=()=>{
+        dispatch(logout())
+    }
     return (
         <header>
             <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
@@ -15,9 +23,16 @@ const Header = () => {
     <LinkContainer to="/cart">
       <Nav.Link >Cart <i className="fas fa-shopping-cart"></i></Nav.Link>
       </LinkContainer>
+      {userInfo? (<NavDropdown title={userInfo.name}>
+              <LinkContainer to="/profile"><NavDropdown.Item>
+                    Profile
+                </NavDropdown.Item></LinkContainer>
+          <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+      </NavDropdown>):
       <LinkContainer to="/login">
       <Nav.Link >Sign In <i className="fas fa-user"></i></Nav.Link>
       </LinkContainer>
+      }
       
     </Nav>
     
