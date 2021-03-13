@@ -24,3 +24,13 @@ export const protect=asyncHandler(async(req,res,next)=>{
     // console.log(user)
     next()
 })
+
+export const admin=asyncHandler(async(req,res,next)=>{
+    if(req.user && req.user.isAdmin){
+        next()
+    }
+    else{
+        res.status(401)
+        throw new Error("Ala tu Admin nadi")
+    }
+})

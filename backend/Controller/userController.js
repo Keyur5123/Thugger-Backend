@@ -101,4 +101,11 @@ export const updateUserProfile=asyncHandler(async(req,res)=>{
     
 
 })
- 
+
+export const adminUser=asyncHandler(async(req,res)=>{
+    const users =await User.find({})
+    res.json(users)
+    
+    
+
+})

@@ -11,11 +11,11 @@ function ShippingScreen({history}) {
     const dispatch = useDispatch()
     const [address, setaddress] = useState(shippingAddress.address)
     const [city, setcity] = useState(shippingAddress.city)
-    const [postalcode, setpostalcode] = useState(shippingAddress.postalcode)
+    const [postalCode, setpostalcode] = useState(shippingAddress.postalCode)
     const [country, setcountry] = useState(shippingAddress.country)
     function submitHandler(event){
         event.preventDefault()
-        dispatch(saveShippingAddress({address,city,postalcode,country}))
+        dispatch(saveShippingAddress({address,city,postalCode,country}))
         history.push("/payment")
     }
     return (
@@ -34,11 +34,11 @@ function ShippingScreen({history}) {
                     </Form.Label>
                     <Form.Control type="text" placeholder="City" value={city} required onChange={(e)=>setcity(e.target.value)} />
                 </Form.Group>
-                <Form.Group controlId="postalcode">
+                <Form.Group controlId="postalCode">
                     <Form.Label>
                         Postal Code
                     </Form.Label>
-                    <Form.Control type="text" value={postalcode} placeholder="Postal Code" required onChange={(e)=>setpostalcode(e.target.value)} />
+                    <Form.Control type="text" value={postalCode} placeholder="Postal Code" required onChange={(e)=>setpostalcode(e.target.value)} />
                 </Form.Group>
                 <Form.Group controlId="country">
                     <Form.Label>

@@ -1,9 +1,13 @@
 import React,{useState,useEffect} from 'react'
 import Message from "../Components/Message"
 import Loader from "../Components/Loader"
-import { Form,Row,Col,Button } from "react-bootstrap";
+import { Form,Row,Col,Button, Table } from "react-bootstrap";
 import {useDispatch,useSelector} from "react-redux"
 import { getUserDetail,updateUserProfile } from '../actions/userAction';
+import { OrderMyListAction } from '../actions/orderActions';
+import axios from 'axios';
+import { ORDER_LIST_MY_SUCCESS } from '../constants/orderConstants';
+import { LinkContainer } from 'react-router-bootstrap';
 
 function ProfileScreen({location,history}) {
     const [name, setname] = useState("")
@@ -12,29 +16,51 @@ function ProfileScreen({location,history}) {
     const [confirmPassword, setconfirmPassword] = useState("")
     const [message, setmessage] = useState(null)
     const redirect=location.search?location.search.split("=")[1]:"/"
-    console.log(redirect)
     const dispatch = useDispatch()
     const userDetails = useSelector(state => state.userDetails)
     const {loading,error,user}=userDetails
 
+    
+    const orderMyList = useSelector(state => state.orderMyList)
+    const {loading:loadingOrders,error:errorOrders,orders}=orderMyList
+    
     const userLogin = useSelector(state => state.userLogin)
     const {userInfo}=userLogin
-
+    
     const userUpdateProfile = useSelector(state => state.userUpdateProfile)
     const {success}=userUpdateProfile
+    
+    
+    
     useEffect(() => {
         if(!userInfo){
             history.push("/login")
         }
         else{
-            if(user.name){
-            setname(user.name)
-            setemail(user.email)
+            if(!user.name){
+                dispatch(getUserDetail("profile"))
+                dispatch(OrderMyListAction)
+                
+               
+            }
+            else{
+                setname(user.name)
+                setemail(user.email)
+                console.log(user.email)
+                const orders=async()=>{
+                    const {data}=await axios.post("user/login",{email:user.email,password:"123456"})
+                    console.log(user.email);
+                    const {token}=data
+                    const {data:orderss}=await axios.get("order/myorders",{headers:{Authorization:`Bearer ${token}`}})
+                    dispatch({type:ORDER_LIST_MY_SUCCESS,payload:orderss})
+                    // console.log("yes",orderss)
+                }
+                orders()
+                
         }
-        else{
-            dispatch(getUserDetail("profile"))
-        }
+        
     }
+    
     }, [dispatch,userInfo,history,user])
     const submitHandler=(event)=>{
         event.preventDefault()
@@ -56,7 +82,7 @@ function ProfileScreen({location,history}) {
                 <Form onSubmit={submitHandler}>
                     <Form.Group controlId="name">
                         <Form.Label>
-                            Name
+                            Name 
                         </Form.Label>
                         <Form.Control type="name" placeholder="Enter Name" value={name} onChange={(e)=> setname(e.target.value)} />
 
@@ -87,6 +113,48 @@ function ProfileScreen({location,history}) {
                 </Form>
                 </Col>
                 <Col md={9}>
+                    <h2>Your Orders</h2>
+                    {loadingOrders ? <Loader/>:errorOrders?<Message variant="danger">{errorOrders}</Message>:
+                    (
+                        <Table striped bordered hover responsive className="table-sm">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>TOTAL</th>
+                                    <th>DATE</th>
+                                    <th>DELIVERED</th>
+                                    <th>PAID</th>
+                                    <th></th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                {orders.map((order,index)=>(
+                                    <tr>
+                                        <td>
+                                            {order._id}
+                                        </td>
+                                        <td>
+                                            ${order.totalPrice}
+                                        </td>
+                                        <td>
+                                            {order.createdAt.substring(0,10)}
+                                        </td>
+                                        <td>
+                                            {order.isDelivered? order.deliveredAt :( <i className="fas fa-times" style={{color:"red"}}></i>)}
+                                        </td>
+                                        <td>
+                                            {order.isPaid? order.paidAt.substring(0,10) :( <i className="fas fa-times" style={{color:"red"}}></i>)}
+                                        </td>
+                                        <td>
+                                            <LinkContainer to={`order/${order._id}`}><Button variant="light">Details</Button></LinkContainer>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                            </Table>
+                    )}
+                    
                 </Col>
             </Row>
     )

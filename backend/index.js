@@ -5,8 +5,10 @@ import cors from "cors"
 import colors from "colors"
 import connectDB from "./config/db.js"
 import ProductRoutes from "./routes/ProductRoutes.js"
+import OrderRoutes from "./routes/OrderRoutes.js"
 import UserRoutes from "./routes/UserRoutes.js"
 import { errorHandler, notFound} from "./MiddleWare/errorMiddleWare.js"
+import bodyParser from "body-parser"
 dotenv.config();
 const app=express();
 app.use(cors())
@@ -19,6 +21,12 @@ connectDB();
 // })
 
 // app.use(express.json()) 
+
+
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.get("/",(req,res)=>{
     res.send(`${products[0].name}`)
 })
@@ -26,6 +34,12 @@ app.get("/",(req,res)=>{
 app.use("/products",ProductRoutes)
 
 app.use("/user",UserRoutes)
+
+app.use("/order",OrderRoutes)
+
+app.get("/config/paypal",(req,res)=>{
+    res.send(process.env.PAYPAL_CLIENT_ID)
+})
 
 app.use(notFound)
 
