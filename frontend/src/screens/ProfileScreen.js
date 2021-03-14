@@ -39,7 +39,7 @@ function ProfileScreen({location,history}) {
         else{
             if(!user.name){
                 dispatch(getUserDetail("profile"))
-                dispatch(OrderMyListAction)
+                dispatch(OrderMyListAction())
                 
                
             }
@@ -47,15 +47,15 @@ function ProfileScreen({location,history}) {
                 setname(user.name)
                 setemail(user.email)
                 console.log(user.email)
-                const orders=async()=>{
-                    const {data}=await axios.post("user/login",{email:user.email,password:"123456"})
-                    console.log(user.email);
-                    const {token}=data
-                    const {data:orderss}=await axios.get("order/myorders",{headers:{Authorization:`Bearer ${token}`}})
-                    dispatch({type:ORDER_LIST_MY_SUCCESS,payload:orderss})
-                    // console.log("yes",orderss)
-                }
-                orders()
+                // const orders=async()=>{
+                //     const {data}=await axios.post("user/login",{email:user.email,password:"123456"})
+                //     console.log(user.email);
+                //     const {token}=data
+                //     const {data:orderss}=await axios.get("order/myorders",{headers:{Authorization:`Bearer ${token}`}})
+                //     dispatch({type:ORDER_LIST_MY_SUCCESS,payload:orderss})
+                //     // console.log("yes",orderss)
+                // }
+                // orders()
                 
         }
         
