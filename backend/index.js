@@ -1,3 +1,4 @@
+import path from "path"
 import express from "express";
 import products from "./data/products.js" 
 import dotenv from "dotenv"
@@ -6,6 +7,7 @@ import colors from "colors"
 import connectDB from "./config/db.js"
 import ProductRoutes from "./routes/ProductRoutes.js"
 import OrderRoutes from "./routes/OrderRoutes.js"
+import UploadRoutes from "./routes/UploadRoutes.js"
 import UserRoutes from "./routes/UserRoutes.js"
 import { errorHandler, notFound} from "./MiddleWare/errorMiddleWare.js"
 import bodyParser from "body-parser"
@@ -37,9 +39,17 @@ app.use("/user",UserRoutes)
 
 app.use("/order",OrderRoutes)
 
+app.use("/upload",UploadRoutes)
+
+const __dirname=path.resolve()
+
+app.use("/uploads",express.static(path.join(__dirname,"/uploads")))
+
 app.get("/config/paypal",(req,res)=>{
     res.send(process.env.PAYPAL_CLIENT_ID)
 })
+
+console.log(path.resolve());
 
 app.use(notFound)
 
