@@ -1,18 +1,22 @@
 import React,{useEffect, useState} from 'react'
 import {PayPalButton} from "react-paypal-button-v2"
 import {Link} from 'react-router-dom';
-import {Col,Image,ListGroup, Row } from "react-bootstrap";
+import {Button, Col,Image,ListGroup, Row } from "react-bootstrap";
 import {useDispatch,useSelector} from "react-redux"
-import {  detailOrderAction, OrderPayAction } from '../actions/orderActions';
+import {  detailOrderAction, OrderDeliverAction, OrderPayAction } from '../actions/orderActions';
 import Message from '../Components/Message'
 import Loader from '../Components/Loader';
 import axios from 'axios';
-function OrderScreen({match,history}) {
+import { ORDER_LIST_RESET } from '../constants/orderConstants';
+
+function OrderScreen({location,match,history}) {
     const cart = useSelector(state => state.cart)
     const detailsOrder = useSelector(state => state.detailsOrder)
     const {loading,order,error}=detailsOrder
     const orderPay = useSelector(state => state.orderPay)
     const {loading:loadingPay,success:successPay}=orderPay
+    const orderDeliver = useSelector(state => state.orderDeliver)
+    const {loading:loadingDeliver,success:successDeliver}=orderDeliver
     cart.itemsprice=cart.cartItems.reduce((acc,item)=>acc+item.price*item.qty,0).toFixed(2)
     const [sdkReady, setsdkReady] = useState(false)
     const dispatch = useDispatch()
@@ -20,7 +24,10 @@ function OrderScreen({match,history}) {
   const { userInfo } = userLogin
   //sb-6evwd4126098@personal.example.comDEFAULT
     useEffect(() => {
-        
+        // location.reload()
+        if(!userInfo){
+            history.push("/login")
+        }
         console.log(order)
         const addPaypalScript=async()=>{
             const {data}=await axios.get("/config/paypal")
@@ -35,8 +42,9 @@ function OrderScreen({match,history}) {
            document.body.appendChild(script);
         }
         
-        if(!order || successPay ){
+        if(!order || successPay || successDeliver ){
             dispatch({type:"ORDER_PAY_RESET"})
+            dispatch({type:"ORDER_DELIVER_RESET"})
             dispatch(detailOrderAction(match.params.id))
         }
         else if(!order.isPaid){
@@ -48,17 +56,20 @@ function OrderScreen({match,history}) {
             }
 
         }
-   }, [dispatch,match.params.id,successPay,order])
+   }, [dispatch,match.params.id,successPay,order,userInfo,history,successDeliver])
    const successHandler=(paymentResult)=>{
         dispatch(OrderPayAction(order._id,paymentResult))
         console.log(paymentResult)
+   }
+   const updateToDelivered=()=>{
+        dispatch(OrderDeliverAction(order))
    }
     
     return loading?<Loader/>:error?<Message variant="danger">{error}</Message>:
         <>
         <h1>Order</h1>
         <Row>
-        <Col md={8}>
+        <Col md={8}> 
             <ListGroup variant="flush">
                 <ListGroup.Item>
                     <h2>Shipping</h2>
@@ -69,7 +80,7 @@ function OrderScreen({match,history}) {
                         <strong>Address:</strong>
                         {order.shippingAddress.address},{order.shippingAddress.city}{" "},{order.shippingAddress.postalCode}{" "},{order.shippingAddress.country}
                     </p>
-                    {order.isDelivered ? <Message>Delivered on {order.deliveredAt}</Message> : <Message variant="danger">Not Delivered</Message>}
+                    {order.isDelivered ? <Message variant="success">Delivered on {order.deliveredAt}</Message> : <Message variant="danger">Not Delivered</Message>}
                 </ListGroup.Item>
                 <ListGroup.Item>
                     <h2>Payment</h2>
@@ -139,6 +150,13 @@ function OrderScreen({match,history}) {
                     )}
                 </ListGroup.Item>
                     }
+                {userInfo && userInfo.isAdmin && order.isPaid &&!order.isDelivered &&(
+                    <ListGroup.Item>
+                    <Button className="btn btn-block" onClick={()=>updateToDelivered()} >Mark As Delivered</Button>
+                    </ListGroup.Item>
+                )}
+                {loadingDeliver && <Loader/>}
+
                     {error && 
                         <ListGroup.Item>
                         <Message variant="danger">{error}</Message>

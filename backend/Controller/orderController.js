@@ -58,3 +58,31 @@ export const myOrderItems=asyncHandler(async(req,res)=>{
     
     
 })
+
+
+export const AllOrderItems=asyncHandler(async(req,res)=>{
+    
+    const orders=await Order.find({})
+    .populate("user","name")
+        res.json(orders)
+    
+    
+})
+
+
+export const updateOrderToDelivered=asyncHandler(async(req,res)=>{
+    
+    const order=await Order.findById(req.params.id)
+    if(order){
+        order.isDelivered=true
+        order.deliveredAt= Date.now()
+        
+
+        const updateOrder=await order.save()
+        res.json(updateOrder)
+    }
+    else{
+    res.status(404)
+    throw new Error("Could not update")
+    }
+})

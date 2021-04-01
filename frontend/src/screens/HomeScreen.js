@@ -6,19 +6,22 @@ import {listProducts} from "../actions/productAcions"
 import Loader from "../Components/Loader"
 import Message from "../Components/Message"
 
-function HomeScreen() {
+function HomeScreen({match}) {
+    const keyword=match.params.keyword
+    const pageNumber=match.params.pageNumber
     // const [products,setProducts]=useState([]);
     const dispatch=useDispatch();
     const productList = useSelector(state => state.productList);
-    const {loading,error,products }=productList
+    const {loading,error,products,page,pages }=productList
+    console.log(page,pages);
     useEffect(() => {
-        dispatch(listProducts())
+        dispatch(listProducts(keyword,pageNumber))
         //  const fetchproducts=async()=>{
         //     const response=await axios.get("http://localhost:5000/products");
         //     setProducts(response.data);
         // }
         // fetchproducts();
-    }, [dispatch])
+    }, [dispatch,keyword,pageNumber])
     return (
         <div>
             <h1>Latest Products</h1>

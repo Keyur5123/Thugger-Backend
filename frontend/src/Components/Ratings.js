@@ -9,7 +9,7 @@ function Ratings({rating,reviews,color}) {
         var elements = [];
         
         for(var i =1; i <=n; i++){
-            elements.push(<i style={{color}} className="fas fa-star"></i>);
+            elements.push(<i id={i} style={{color}} className="fas fa-star"></i>);
         }
         console.log(n);
         return elements;

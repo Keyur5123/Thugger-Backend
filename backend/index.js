@@ -17,6 +17,7 @@ app.use(cors())
 app.use(express.json())
 connectDB();
 
+
 // app.use((req,res,next)=>{
 //     console.log(res)
 //     next();
@@ -31,6 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/",(req,res)=>{
     res.send(`${products[0].name}`)
+    process.exit(1)
 })
 
 app.use("/products",ProductRoutes)

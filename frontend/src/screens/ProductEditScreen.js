@@ -30,7 +30,7 @@ function ProductEditScreen({match,history}) {
             dispatch({type:PRODUCT_UPDATE_RESET})
             history.push("/admin/productlist")
         }else{
-            if(!product.brand || product._id!==productId ){
+            if(!product.name || product._id!==productId ){
                 dispatch(listProductsDetail(productId))
             }else{
                 setname(product.name)
