@@ -2,17 +2,17 @@ import Products from "../Models/ProductSchema.js"
 import asyncHandler from "express-async-handler"
 
 export const getProducts=asyncHandler(async(req,res)=>{
-    const pageSize=4
-    const page=req.query.pageNumber||1
+    const pageSize=8
+    const page=req.query.pageNumber ?req.query.pageNumber: 1
     const keyword=req.query.keyword? {
         name:{
             $regex:req.query.keyword,
             $options:"i"
         }
     }:{}
-    const count=await Products.count({...keyword})
+    const count=await Products.countDocuments({...keyword})
     const products=await Products.find({...keyword}).limit(pageSize).skip(pageSize*(page-1))
-    res.json({products,page,pages:Math.ceil(count/pageSize)})
+    res.json({products,page:page,pages:Math.ceil(count/pageSize)})
 })
 
 export const getProductById=asyncHandler(async(req,res)=>{
@@ -104,4 +104,10 @@ export const createProductReviews=asyncHandler(async(req,res)=>{
         res.status(404)
         throw new Error("product ni malyu")        
     }
+})
+
+
+export const getTopProducts=asyncHandler(async(req,res)=>{
+    const products=await Products.find({}).sort({rating:-1}).limit(3)
+    res.json(products)
 })

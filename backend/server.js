@@ -30,26 +30,35 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/",(req,res)=>{
-    res.send(`${products[0].name}`)
-    process.exit(1)
-})
 
-app.use("/products",ProductRoutes)
 
-app.use("/user",UserRoutes)
+app.use("/api/products",ProductRoutes)
 
-app.use("/order",OrderRoutes)
+app.use("/api/user",UserRoutes)
 
-app.use("/upload",UploadRoutes)
+app.use("/api/order",OrderRoutes)
+
+app.use("/api/upload",UploadRoutes)
 
 const __dirname=path.resolve()
 
 app.use("/uploads",express.static(path.join(__dirname,"/uploads")))
 
-app.get("/config/paypal",(req,res)=>{
+app.get("/api/config/paypal",(req,res)=>{
     res.send(process.env.PAYPAL_CLIENT_ID)
 })
+
+if(process.env.NODE_ENV==="Production"){
+    app.use(express.static(path.join(__dirname,"/frontend/build")))
+    app.get("*",(req,res)=>{
+        res.sendFile(path.resolve(__dirname,"frontend","build","index.html"))
+    })
+}else{
+    app.get("/",(req,res)=>{
+        res.send(`${products[0].name}`)
+        process.exit(1)
+    })
+}
 
 console.log(path.resolve());
 

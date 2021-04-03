@@ -72,7 +72,7 @@ function ProductEditScreen({match,history}) {
                         "Content-type":"multipart/form-data"
                     }
                 }
-                const {data}=await axios.post("/upload",formData,config)
+                const {data}=await axios.post("/api/upload",formData,config)
                 console.log("yes")
                 setimage(data)
                 setuploading(false)

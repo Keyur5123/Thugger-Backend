@@ -3,14 +3,15 @@
   "type": "module",
   "version": "1.0.0",
   "description": "backend maate",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node backend/index",
-    "server": "nodemon backend/index",
+    "start": "node backend/server",
+    "server": "nodemon backend/server",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:import": "node backend/seeder",
-    "data:destroy": "node backend/seeder -d"
+    "data:destroy": "node backend/seeder -d",
+    "heroku-postbuild":"NPM_CONFIG_PRODUCTION=false npm install--prefix frontend npm run build --prefix frontend"
   },
   "author": "Thug",
   "license": "ISC",

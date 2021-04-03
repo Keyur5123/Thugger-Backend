@@ -14,7 +14,7 @@ export const login=(email,password)=>async(dispatch)=>{
                 "Content-type":"application/json"
             }
         }
-        const response =await axios.post("/user/login",{email,password},config);
+        const response =await axios.post("/api/user/login",{email,password},config);
         
         dispatch({
             type:USER_LOGIN_SUCCESS,
@@ -42,7 +42,7 @@ export const register=(name,email,password)=>async(dispatch)=>{
                 "Content-type":"application/json"
             }
         }
-        const response =await axios.post("/user",{name,email,password},config);
+        const response =await axios.post("/api/user",{name,email,password},config);
         
         dispatch({
             type:USER_REGISTER_SUCCESS,
@@ -92,7 +92,7 @@ export const getUserDetail=(id)=>async(dispatch,getState)=>{
                 Authorization:`Bearer ${userInfo.token}`
             }
         }
-        const response =await axios.get(`/user/${id}`,config);
+        const response =await axios.get(`/api/user/${id}`,config);
         
         dispatch({
             type:USER_DETAILS_SUCCESS,
@@ -119,7 +119,7 @@ export const updateUserProfile=(user)=>async(dispatch,getState)=>{
                 Authorization:`Bearer ${userInfo.token}`
             }
         }
-        const response =await axios.put(`/user/profile`,user,config);
+        const response =await axios.put(`/api/user/profile`,user,config);
         
         dispatch({
             type:USER_UPDATE_PROFILE_SUCCESS,
@@ -148,7 +148,7 @@ export const listUser=()=>async(dispatch,getState)=>{
                 Authorization:`Bearer ${userInfo.token}`
             }
         }
-        const response =await axios.get(`/user`,config);
+        const response =await axios.get(`/api/user`,config);
         
         dispatch({
             type:USER_LIST_SUCCESS,
@@ -175,7 +175,7 @@ export const deleteUserAction=(id)=>async(dispatch,getState)=>{
                 Authorization:`Bearer ${userInfo.token}`
             }
         }
-        await axios.delete(`/user/${id}`,config);
+        await axios.delete(`/api/user/${id}`,config);
         
         dispatch({
             type:USER_DELETE_SUCCESS
@@ -202,7 +202,7 @@ export const UserUpdateAction=(user)=>async(dispatch,getState)=>{
                 Authorization:`Bearer ${userInfo.token}`
             }
         }
-        const response=await axios.put(`/user/${user._id}`,user,config);
+        const response=await axios.put(`/api/user/${user._id}`,user,config);
         
         dispatch({
             type:USER_UPDATE_SUCCESS

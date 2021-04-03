@@ -7,11 +7,13 @@ import {useDispatch,useSelector} from "react-redux"
 import { deleteUserAction, listUser } from '../actions/userAction';
 import { listProducts, productCreateAction, productDeleteAction } from '../actions/productAcions';
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants';
+import Paginate from '../Components/Paginate';
 
-function ProductListScreen({history}) {
+function ProductListScreen({history,match}) {
+    const pageNumber=match.params.pageNumber
     const dispatch = useDispatch()
     const productList = useSelector(state => state.productList)
-    const {error,loading,products}=productList
+    const {error,loading,products,page,pages}=productList
     const productDelete = useSelector(state => state.productDelete)
     const {error:errorDelete,loading:loadingDelete,success:successDelete}=productDelete
     const userLogin = useSelector(state => state.userLogin)
@@ -28,10 +30,10 @@ function ProductListScreen({history}) {
             history.push(`/admin/product/${product._id}/edit`)
         }
         else{
-            dispatch(listProducts())
+            dispatch(listProducts("",pageNumber))
         }
         
-    }, [dispatch,history,userInfo,successDelete,success,product])
+    }, [dispatch,history,userInfo,successDelete,success,product,pageNumber])
     const deleteHandler=(id)=>{
         if(window.confirm("Sure delete kari devanu"))
         {
@@ -56,6 +58,7 @@ function ProductListScreen({history}) {
             {loadingDelete && <Loader/>}
             {errorDelete && <Message variant="danger">{errorDelete}</Message>}
             {loading? <Loader/>:error?<Message variant="danger">{error}</Message>:(
+            <>
                 <Table striped bordered responsive hover>
                     <thead>
                         <tr>
@@ -83,6 +86,8 @@ function ProductListScreen({history}) {
                         ))}
                     </tbody>
                 </Table>
+                <Paginate isAdmin={true} pages={pages} page={page} ></Paginate>
+                </>
             )}
         </div>
     )

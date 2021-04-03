@@ -30,7 +30,7 @@ function OrderScreen({location,match,history}) {
         }
         console.log(order)
         const addPaypalScript=async()=>{
-            const {data}=await axios.get("/config/paypal")
+            const {data}=await axios.get("/api/config/paypal")
             console.log(data);
            const script=document.createElement('script');
            script.src=`https://www.paypal.com/sdk/js?client-id=${data}`

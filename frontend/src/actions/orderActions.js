@@ -18,7 +18,7 @@ export const createOrderAction=(order)=>async(dispatch,getState)=>{
                     Authorization:`Bearer ${userInfo.token}`
                 }
             }
-        const {data}=await axios.post("/order",order,config)
+        const {data}=await axios.post("/api/order",order,config)
         dispatch({
             type:ORDER_CREATE_SUCCESS,
             payload:data
@@ -44,7 +44,7 @@ export const detailOrderAction=(id)=>async(dispatch,getState)=>{
                     Authorization:`Bearer ${userInfo.token}`
                 }
             }
-        const {data}=await axios.get(`/order/${id}`,config)
+        const {data}=await axios.get(`/api/order/${id}`,config)
         dispatch({
             type:ORDER_DETAILS_SUCCESS,
             payload:data
@@ -72,7 +72,7 @@ export const OrderPayAction=(id,paymentResult)=>async(dispatch,getState)=>{
                     Authorization:`Bearer ${userInfo.token}`
                 }
             }
-        const {data}=await axios.put(`/order/${id}/pay`,paymentResult,config)
+        const {data}=await axios.put(`/api/order/${id}/pay`,paymentResult,config)
         dispatch({
             type:ORDER_PAY_SUCCESS,
             payload:data
@@ -98,7 +98,7 @@ export const OrderMyListAction=()=>async(dispatch,getState)=>{
                     Authorization:`Bearer ${userInfo.token}`
                 }
             }
-        const {data}=await axios.get(`/order/myorders`,config)
+        const {data}=await axios.get(`/api/order/myorders`,config)
         dispatch({
             type:ORDER_LIST_MY_SUCCESS,
             payload:data
@@ -125,7 +125,7 @@ export const OrderListAction=()=>async(dispatch,getState)=>{
                     Authorization:`Bearer ${userInfo.token}`
                 }
             }
-        const {data}=await axios.get(`/order`,config)
+        const {data}=await axios.get(`/api/order`,config)
         dispatch({
             type:ORDER_LIST_SUCCESS,
             payload:data
@@ -153,7 +153,7 @@ export const OrderDeliverAction=(order)=>async(dispatch,getState)=>{
                     Authorization:`Bearer ${userInfo.token}`
                 }
             }
-        const {data}=await axios.put(`/order/${order._id}/deliver`,{},config)
+        const {data}=await axios.put(`/api/order/${order._id}/deliver`,{},config)
         dispatch({
             type:ORDER_DETAILS_SUCCESS,
             payload:data

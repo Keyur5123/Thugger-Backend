@@ -37,7 +37,8 @@ function App() {
             <Route path="/shipping" component={ShippingScreen} ></Route>
             <Route path="/admin/userlist" component={UserListScreen} ></Route>
             <Route path="/admin/orderlist" component={OrderListScreen} ></Route>
-            <Route path="/admin/productlist" component={ProductListScreen} ></Route>
+            <Route path="/admin/productlist" component={ProductListScreen} exact ></Route>
+            <Route path="/admin/productlist/:pageNumber" component={ProductListScreen} exact ></Route>
             <Route path="/admin/user/:id/edit" component={EditUserScreen} ></Route>
             <Route path="/admin/product/:id/edit" component={ProductEditScreen} ></Route>
             <Route path="/test" component={test} ></Route>
@@ -45,9 +46,9 @@ function App() {
             <Route path="/login" component={LoginScreen} ></Route>
             <Route path="/register" component={RegisterScreen} ></Route>
             <Route path="/profile" component={ProfileScreen} ></Route>
-            <Route path="/search/:keyword" component={HomeScreen} ></Route>
-            <Route path="/page/:pageNumber" component={HomeScreen} ></Route>
-            <Route path="/search/:keyword/page/:pageNumber" component={HomeScreen} ></Route>
+            <Route path="/search/:keyword" component={HomeScreen} exact ></Route>
+            <Route path="/page/:pageNumber" component={HomeScreen} exact></Route>
+            <Route path="/search/:keyword/page/:pageNumber" component={HomeScreen} exact></Route>
             <Route component={test}/>
           </Switch>
         </Container> 

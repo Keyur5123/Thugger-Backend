@@ -48,7 +48,7 @@ function ProfileScreen({location,history}) {
                 setemail(user.email)
                 console.log(user.email)
                 // const orders=async()=>{
-                //     const {data}=await axios.post("user/login",{email:user.email,password:"123456"})
+                //     const {data}=await axios.post("/apiuser/login",{email:user.email,password:"123456"})
                 //     console.log(user.email);
                 //     const {token}=data
                 //     const {data:orderss}=await axios.get("order/myorders",{headers:{Authorization:`Bearer ${token}`}})

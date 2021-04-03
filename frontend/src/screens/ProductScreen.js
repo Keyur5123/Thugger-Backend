@@ -7,6 +7,7 @@ import Loader from '../Components/Loader';
 import Ratings from "../Components/Ratings"
 import Message from "../Components/Message"
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants';
+import Meta from '../Components/Meta';
 
 function ProductScreen({history,match}) {
     const dispatch = useDispatch()
@@ -46,6 +47,7 @@ function ProductScreen({history,match}) {
             </Link>
             {loading?<Loader/>:error?<Alert>{error}</Alert>:
             <>
+            <Meta title={product.name}/>
             <Row>
                 <Col md={6}>
                     <Image src={product.image} alt="" fluid />
